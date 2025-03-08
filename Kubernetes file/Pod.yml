@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: singlecontainerpod
+  annotations:
+    description: this id demo of pod
+spec:
+  containers:
+    -name: container1
+    image: ubuntu
+    command: ["/bin/bash", "-c", "while true; do echo c1; sleep 5 ; done"]
+    -name: nginx
+    image: nginx:1.14.2
+    ports:
+      -containerPort: 80
