@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  labels:
+    deployment: deployment1
+spec:
+  replicas: 1
+  selector:
+    matchLables:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-pp
+    spec:
+      containers:
+      - name: container1
+        image: httpd
+        resources:
+          requests:
+            cpu: "250m"
+          limits:
+            cpu: "500m"
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutosaler
+metadata:
+  name: HPA1
+scaleTargetRef:
+  apiVersion: apps/v1
+  kind: Deployment
+  name: my-app
+minReplicas: 1
+maxReplicas: 10
+metrics:
+- type: resource
+  resource:
+    name: cpu
+    target:
+      type: utilization
+      averageUtilization: 50
+  

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment1
+  labels:
+    deployment: deployment1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deployment1_app
+  template:
+    metadata:
+      name: pod1
+      labels:
+        app: deployment_app
+    spec:
+      containers:
+      - name: container1
+        image: httpd
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "512mi"
+          limits:
+            cpu: "500m"
+            memory: "1Gi"
+
+---
+apiVersion: autoscaling/v2
+kind: VerticalPodAutoscaler
+metadata:
+  name: VPA1
+targetRef:
+  apiVersion: apps/v1
+  kind: Deployment
+  name: deployment1
+updatePolicy:
+  updateMode: "Auto" #options: Off, Initial, Auto
