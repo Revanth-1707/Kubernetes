@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap1
+data:
+  APP_ENV: "production"
+  LOG_LEVEL: "debug"
+  MAX_CONNECTIONS: "100"
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod1
+spec:
+  containers:
+  - name: pod1_container1
+    image: nginx
+    command: ["/bin/bash","-c","while true; do echo $APP_ENV; sleep 20; done"]
+    volumeMounts:
+    - name: pod1_volume1
+      mountPath: "/etc/config"
+
+  volumes:
+  - name: pod1_volume1
+    configMap:
+      name: configmap1

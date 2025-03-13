@@ -1,0 +1,17 @@
+apiversion: v1
+kind: Pod
+metadata:
+  name: pod1
+spec:
+  containers:
+  - name: pod1_container1
+    image: nginx
+    command: ["/bin/bash","-c","while true; do echo Hi ; sleep 20; done"]
+    voumeMounts:
+    - name: pod1_volume1
+      mountPath: "/data"
+  volumes:
+    - name: pod1_volume1
+      hostPath:
+        path: "/var/data"  # Path on the node
+        type: DirectoryOrCreate   # Creates the directory if it doesn't exist
